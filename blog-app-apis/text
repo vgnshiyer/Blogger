@@ -1,0 +1,5 @@
+Docker Command to run mysql database
+
+docker volume create mysql-data
+
+docker run --name mysql -p 3306:3306 -v mysql-data:/var/lib/mysql  -e MYSQL_ROOT_PASSWORD=admin123 -d mysql
