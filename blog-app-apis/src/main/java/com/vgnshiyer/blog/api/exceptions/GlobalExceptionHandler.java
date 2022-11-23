@@ -21,9 +21,15 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ApiResponse>(new ApiResponse(message, false), HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler(InvalidCredentialException.class)
+	public ResponseEntity<ApiResponse> invalidCredentialException(InvalidCredentialException e){
+		String message = e.getMessage();
+		return new ResponseEntity<ApiResponse>(new ApiResponse(message, false), HttpStatus.BAD_REQUEST);
+	}
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> methodArgumentNotValidException(MethodArgumentNotValidException e){
-		Map<String, String> response = new HashMap<>();
+		HashMap<String, String> response = new HashMap();
 		
 		e.getBindingResult().getAllErrors().forEach((error) -> {
 			String fieldName = ((FieldError)error).getField();
