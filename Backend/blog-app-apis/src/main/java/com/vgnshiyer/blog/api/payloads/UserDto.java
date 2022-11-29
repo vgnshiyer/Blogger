@@ -37,4 +37,9 @@ public class UserDto {
 	private String about;
 	
 	private Set<RoleDto> roles = new HashSet<>();
+	
+	@JsonIgnore
+	public String getPassword() {
+		return this.password;
+	}
 }

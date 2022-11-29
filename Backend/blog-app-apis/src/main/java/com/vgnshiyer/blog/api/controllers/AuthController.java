@@ -2,6 +2,7 @@ package com.vgnshiyer.blog.api.controllers;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vgnshiyer.blog.api.entities.User;
 import com.vgnshiyer.blog.api.exceptions.InvalidCredentialException;
 import com.vgnshiyer.blog.api.payloads.JwtAuthRequest;
 import com.vgnshiyer.blog.api.payloads.JwtAuthResponse;
@@ -39,6 +41,9 @@ public class AuthController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request) throws Exception{
 		this.authenticate(request.getUsername(), request.getPassword());
@@ -47,6 +52,7 @@ public class AuthController {
 		
 		JwtAuthResponse response = new JwtAuthResponse();
 		response.setToken(token);
+		response.setUser(this.modelMapper.map((User)userDetails, UserDto.class));
 		return ResponseEntity.ok(response);
 	}
 	

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Base from "../components/Base";
 import { login } from "../services/user-service";
 import { Link } from "react-router-dom"
+import { doLogin } from "../auth";
 
 const Login=()=>{
 
@@ -18,7 +19,7 @@ const Login=()=>{
     })
 
     useEffect(() => {
-        console.log(data)
+        // console.log(data)
     }, [data])
 
     const handleChange = (event, property) => {
@@ -36,6 +37,12 @@ const Login=()=>{
         login(data).then((response) => {
             console.log(response)
             console.log("success")
+
+            // save token to local
+            doLogin(response, ()=>{
+                console.log("token has been saved to local storage.")
+            })
+
             toast.success("Welcome Back!")
             setData({
                 username : '',
